@@ -306,9 +306,12 @@ button, a { font: inherit; }
 }
 
 .social-card__icon img.social-card__icon-image--github {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 220%;
-  clip-path: circle(15.5% at 50% 50%);
-  transform: translate(2px, -1px);
+  clip-path: circle(15.5% at 48.6% 50%);
+  transform: translate(-48.6%, -50%);
 }
 
 .social-card__copy {
