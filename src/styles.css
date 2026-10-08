@@ -318,7 +318,6 @@ button, a { font: inherit; }
   display: flex;
   flex-direction: column;
   min-width: 0;
-  overflow: hidden;
 }
 
 .social-card__copy > span {
@@ -332,13 +331,11 @@ button, a { font: inherit; }
 .social-card__copy strong {
   display: block;
   max-width: 100%;
-  overflow: hidden;
   font-size: clamp(2.2rem, 4vw, 4.6rem);
   font-size: clamp(1.8rem, 9cqi, 3.4rem);
   font-weight: 600;
-  line-height: 0.9;
+  line-height: 1.05;
   letter-spacing: -0.065em;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
