@@ -35,6 +35,92 @@ const SOCIALS = [
 ]
 
 const SOCIAL_PROGRESS = [0.47, 0.69, 0.9]
+const SCROLL_LETTERS = [..."SCROLL"]
+
+const scrollWordVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.28,
+      staggerChildren: 0.065,
+    },
+  },
+}
+
+const scrollLetterVariants = {
+  hidden: {
+    opacity: 0,
+    y: "0.7em",
+    filter: "blur(4px)",
+  },
+  visible: {
+    opacity: 1,
+    y: "0em",
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.55,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+}
+
+function InitialScrollIndicator({ opacity, reduceMotion }) {
+  return (
+    <motion.div
+      className="scene-scroll-indicator"
+      style={{ opacity }}
+      aria-hidden="true"
+    >
+      <motion.div
+        className="scene-scroll-indicator__breath"
+        animate={reduceMotion ? undefined : { opacity: [1, 0.52, 1] }}
+        transition={reduceMotion ? undefined : {
+          duration: 8,
+          delay: 1.4,
+          ease: "easeInOut",
+          repeat: Infinity,
+        }}
+      >
+        <motion.span
+          className="scene-scroll-indicator__word"
+          variants={scrollWordVariants}
+          initial={reduceMotion ? false : "hidden"}
+          animate="visible"
+        >
+          {SCROLL_LETTERS.map((letter, index) => (
+            <motion.span
+              className="scene-scroll-indicator__letter"
+              variants={scrollLetterVariants}
+              key={`${letter}-${index}`}
+            >
+              {letter}
+            </motion.span>
+          ))}
+        </motion.span>
+
+        <motion.span
+          className="scene-scroll-indicator__arrow"
+          initial={reduceMotion ? false : { opacity: 0, y: -5 }}
+          animate={reduceMotion ? undefined : {
+            opacity: 1,
+            y: [0, 3, 0],
+          }}
+          transition={reduceMotion ? undefined : {
+            opacity: { delay: 0.78, duration: 0.45 },
+            y: {
+              delay: 1.4,
+              duration: 4,
+              ease: "easeInOut",
+              repeat: Infinity,
+            },
+          }}
+        >
+          ↓
+        </motion.span>
+      </motion.div>
+    </motion.div>
+  )
+}
 
 function SocialCard({ social, visible, reduceMotion }) {
   return (
@@ -106,8 +192,6 @@ function ScrollExperience() {
     const progress = Math.min(Math.max((value - 0.11) / 0.11, 0), 1)
     return 1 - progress
   })
-  const scrollLineScale = useTransform(scrollYProgress, [0, 0.2], [0, 1])
-
   const horizontalOpacity = useTransform(scrollYProgress, (value) => {
     const progress = Math.min(Math.max((value - 0.07) / 0.17, 0), 1)
     return 1 - progress
@@ -172,16 +256,10 @@ function ScrollExperience() {
           <span>Eduardonavis.unip@gmail.com</span>
         </motion.div>
 
-        <motion.div
-          className="scene-scroll-indicator"
-          style={{ opacity: metaOpacity }}
-          aria-hidden="true"
-        >
-          <span>Scroll</span>
-          <span className="scene-scroll-indicator__track">
-            <motion.span style={{ scaleX: reduceMotion ? 1 : scrollLineScale }} />
-          </span>
-        </motion.div>
+        <InitialScrollIndicator
+          opacity={horizontalOpacity}
+          reduceMotion={reduceMotion}
+        />
 
         <motion.div
           className="mobile-scroll-indicator"
